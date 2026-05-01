@@ -1,0 +1,63 @@
+# ============================================================
+# 多 Agent 协作框架 — 默认配置文件
+# ============================================================
+
+# LLM 后端配置
+llm:
+  provider: openai        # openai | anthropic | local
+  model: gpt-4
+  api_key: ""             # 也可通过 OPENAI_API_KEY 环境变量设置
+  api_base: null
+  temperature: 0.3
+  max_tokens: 8192
+  top_p: 0.95
+
+# 各 Agent 个性化配置
+agents:
+  planning:
+    role: planning
+    max_retries: 3
+    timeout_seconds: 300
+    temperature_override: 0.2   # 规划任务需要较低温度
+
+  coding:
+    role: coding
+    max_retries: 5
+    timeout_seconds: 600
+    temperature_override: 0.3
+    tools:
+      - file_write
+      - file_read
+      - bash_execute
+
+  data:
+    role: data
+    max_retries: 3
+    timeout_seconds: 600
+    temperature_override: 0.2
+
+  literature:
+    role: literature
+    max_retries: 3
+    timeout_seconds: 600
+    temperature_override: 0.5   # 写作任务可较高温
+
+  ops:
+    role: ops
+    max_retries: 3
+    timeout_seconds: 300
+    temperature_override: 0.1   # 配置生成需要极低温度
+
+# 工作区配置
+workspace_dir: ./workspace
+max_concurrent_tasks: 5
+
+# 日志配置
+log_level: INFO
+log_file: agent_framework.log
+
+# 上下文窗口限制 (tokens)
+context_window_limit: 100000
+
+# 是否持久化会话
+session_persist: true
